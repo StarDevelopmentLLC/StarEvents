@@ -46,7 +46,7 @@ dependencies {
     compileOnly "com.stardevllc:SMCVersion:${smcversionVersion}"
 
     implementation project(':common')
-    implementation project(':standalone')
+    implementation project(':core')
     implementation project(':v1_8_1_11')
     implementation project(':v1_8_1_13_2')
     implementation project(':v1_8_3')

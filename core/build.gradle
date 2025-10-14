@@ -1,0 +1,65 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
+plugins {
+    id 'java-library'
+    id 'com.gradleup.shadow' version '9.2.2'
+}
+
+version = rootProject.version
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url = 'https://repo.stardevllc.com/releases'}
+}
+
+dependencies {
+    compileOnly project(':common')
+    compileOnly project(':v1_8_1_11')
+    compileOnly project(':v1_8_1_13_2')
+    compileOnly project(':v1_8_3')
+    compileOnly project(':v1_8_8')
+    compileOnly project(':v1_9_4')
+    compileOnly project(':v1_10_2')
+    compileOnly project(':v1_11_2')
+    compileOnly project(':v1_12_2')
+    compileOnly project(':v1_13')
+    compileOnly project(':v1_13_2')
+    compileOnly project(':v1_14')
+    compileOnly project(':v1_14_1')
+    compileOnly project(':v1_14_4')
+    compileOnly project(':v1_15_2')
+    compileOnly project(':v1_16_1')
+    compileOnly project(':v1_16_3')
+    compileOnly project(':v1_16_5')
+    compileOnly project(':v1_17_1')
+    compileOnly project(':v1_18_1')
+    compileOnly project(':v1_19_3')
+    compileOnly project(':v1_20_1')
+    compileOnly project(':v1_21_1')
+    compileOnly project(':v1_21_4')
+    compileOnly project(':v1_21_7')
+    compileOnly 'org.spigotmc:spigot-api:1.8-R0.1-SNAPSHOT'
+    compileOnly "com.stardevllc:StarLib:${starlibVersion}"
+    compileOnly "com.stardevllc:SMCVersion:${smcversionVersion}"
+}
+
+processResources {
+    filesMatching("*.yml") {
+        expand(project.properties)
+    }
+}
+
+tasks.named('shadowJar', ShadowJar) {
+    archiveClassifier = 'plugin'
+    archiveBaseName = 'StarEvents'
+    destinationDirectory = rootProject.layout.buildDirectory.dir("libs")
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.jar.finalizedBy(shadowJar)

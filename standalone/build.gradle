@@ -5,6 +5,8 @@ plugins {
     id 'com.gradleup.shadow' version '9.2.2'
 }
 
+version = rootProject.version
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -13,6 +15,8 @@ repositories {
 
 dependencies {
     implementation project(':common')
+    implementation project(':core')
+    implementation project(':plugin')
     implementation project(':v1_8_1_11')
     implementation project(':v1_8_1_13_2')
     implementation project(':v1_8_3')
@@ -38,12 +42,20 @@ dependencies {
     implementation project(':v1_21_4')
     implementation project(':v1_21_7')
     compileOnly 'org.spigotmc:spigot-api:1.8-R0.1-SNAPSHOT'
-    compileOnly "com.stardevllc:StarLib:${starlibVersion}"
-    compileOnly "com.stardevllc:SMCVersion:${smcversionVersion}"
+    implementation "com.stardevllc:StarLib:${starlibVersion}"
+    implementation "com.stardevllc:SMCVersion:${smcversionVersion}"
+}
+
+processResources {
+    filesMatching("*.yml") {
+        expand(project.properties)
+    }
 }
 
 tasks.named('shadowJar', ShadowJar) {
     archiveClassifier = 'standalone'
+    archiveBaseName = 'StarEvents'
+    destinationDirectory = rootProject.layout.buildDirectory.dir("libs")
 }
 
 java {

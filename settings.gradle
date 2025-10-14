@@ -4,8 +4,8 @@ plugins {
 
 rootProject.name = 'StarEvents'
 include('common')
+include('core')
 include('plugin')
-include('plugin-full')
 include('standalone')
 include('v1_8_1_11')
 include('v1_8_1_13_2')
