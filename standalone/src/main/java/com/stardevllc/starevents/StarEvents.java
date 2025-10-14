@@ -137,11 +137,6 @@ public final class StarEvents {
         for (EventListener listener : listeners) {
             addEventListener(listener);
         }
-        
-        try {
-            Class.forName("com.stardevllc.starmclib.StarMCLib");
-            StarMCLibIntegration.init();
-        } catch (Throwable t) {}
     }
     
     public enum Status {
