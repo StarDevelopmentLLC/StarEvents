@@ -39,4 +39,12 @@ public class EventListener implements Listener {
         
         return minInRange && maxInRange;
     }
+    
+    public MinecraftVersion getMinVersion() {
+        return minVersion;
+    }
+    
+    public MinecraftVersion getMaxVersion() {
+        return maxVersion;
+    }
 }
