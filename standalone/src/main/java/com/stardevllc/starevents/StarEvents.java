@@ -49,6 +49,10 @@ public final class StarEvents {
     private static final Map<EventListener, Throwable> failedListeners = new HashMap<>();
     private static final List<EventListener> outOfRangeListeners = new ArrayList<>();
     
+    public static void registerListener(Object listener) {
+        EventListener.EVENT_BUS.subscribe(listener);
+    }
+    
     public static <E extends Event> void registerListener(Class<E> eventType, BukkitEventListener<E> listener) {
         EventListener.EVENT_BUS.subscribe(listener);
     }
