@@ -40,7 +40,6 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.8-R0.1-SNAPSHOT'
     compileOnly "com.stardevllc:StarLib:${starlibVersion}"
     compileOnly "com.stardevllc:SMCVersion:${smcversionVersion}"
-    compileOnly "com.stardevllc:StarMCLib:${starmclibVersion}"
 }
 
 tasks.named('shadowJar', ShadowJar) {
