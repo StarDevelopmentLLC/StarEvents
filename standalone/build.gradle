@@ -1,0 +1,55 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
+plugins {
+    id 'java-library'
+    id 'com.gradleup.shadow' version '9.2.2'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url = 'https://repo.stardevllc.com/releases'}
+}
+
+dependencies {
+    implementation project(':common')
+    implementation project(':v1_8_1_11')
+    implementation project(':v1_8_1_13_2')
+    implementation project(':v1_8_3')
+    implementation project(':v1_8_8')
+    implementation project(':v1_9_4')
+    implementation project(':v1_10_2')
+    implementation project(':v1_11_2')
+    implementation project(':v1_12_2')
+    implementation project(':v1_13')
+    implementation project(':v1_13_2')
+    implementation project(':v1_14')
+    implementation project(':v1_14_1')
+    implementation project(':v1_14_4')
+    implementation project(':v1_15_2')
+    implementation project(':v1_16_1')
+    implementation project(':v1_16_3')
+    implementation project(':v1_16_5')
+    implementation project(':v1_17_1')
+    implementation project(':v1_18_1')
+    implementation project(':v1_19_3')
+    implementation project(':v1_20_1')
+    implementation project(':v1_21_1')
+    implementation project(':v1_21_4')
+    implementation project(':v1_21_7')
+    compileOnly 'org.spigotmc:spigot-api:1.8-R0.1-SNAPSHOT'
+    compileOnly "com.stardevllc:StarLib:${starlibVersion}"
+    compileOnly "com.stardevllc:SMCVersion:${smcversionVersion}"
+}
+
+tasks.named('shadowJar', ShadowJar) {
+    archiveClassifier = 'standalone'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.jar.finalizedBy(shadowJar)

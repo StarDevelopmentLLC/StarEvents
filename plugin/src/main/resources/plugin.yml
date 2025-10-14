@@ -1,0 +1,6 @@
+main: com.stardevllc.starevents.plugin.StarEventsPlugin
+version: ${version}
+api-version: 1.13
+name: ${rootProject.name}
+author: Firestar311
+load: STARTUP

@@ -1,0 +1,34 @@
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.9.0'
+}
+
+rootProject.name = 'StarEvents'
+include('common')
+include('plugin')
+include('plugin-full')
+include('standalone')
+include('v1_8_1_11')
+include('v1_8_1_13_2')
+include('v1_8_3')
+include('v1_8_8')
+include('v1_9_4')
+include('v1_10_2')
+include('v1_11_2')
+include('v1_12_2')
+include('v1_13')
+include('v1_13_2')
+//1.14.x events are split up properly between versions
+include('v1_14')
+include('v1_14_1')
+include('v1_14_4')
+include('v1_15_2')
+include('v1_16_1')
+include('v1_16_3')
+include('v1_16_5')
+include('v1_17_1')
+include('v1_18_1')
+include('v1_19_3')
+include('v1_20_1')
+include('v1_21_1')
+include('v1_21_4')
+include('v1_21_7')
