@@ -19,5 +19,6 @@ public class StarEventsPlugin extends JavaPlugin {
         getLogger().info(StarEvents.getSuccesfulListeners().size() + " listeners successfully registered");
         getLogger().info(StarEvents.getFailedListeners().size() + " listeners failed to load");
         getLogger().info(StarEvents.getOutOfRangeListeners().size() + " listeners were not loaded because they don't support this version");
+        getLogger().info(StarEvents.getEventsTracked().size() + " total events are tracked");
     }
 }

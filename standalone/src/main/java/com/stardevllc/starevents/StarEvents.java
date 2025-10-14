@@ -20,11 +20,11 @@ import com.stardevllc.starevents.v1_17_1.*;
 import com.stardevllc.starevents.v1_18_1.BlockEvents_1_18_1;
 import com.stardevllc.starevents.v1_19_3.InventoryEvents_1_19_3;
 import com.stardevllc.starevents.v1_20_1.EntityEvents_1_20_1;
-import com.stardevllc.starevents.v1_21_1.*;
+import com.stardevllc.starevents.v1_21_1.EntityEvents_1_21_1;
+import com.stardevllc.starevents.v1_21_1.PlayerEvents_1_21_1;
 import com.stardevllc.starevents.v1_21_4.BlockEvents_1_21_4;
 import com.stardevllc.starevents.v1_21_4.EntityEvents_1_21_4;
 import com.stardevllc.starevents.v1_21_7.EntityEvents_1_21_7;
-import com.stardevllc.starevents.v1_21_7.PlayerEvents_1_21_7;
 import com.stardevllc.starevents.v1_8_1_11.PlayerAchievmentListener_1_8_1_11;
 import com.stardevllc.starevents.v1_8_1_11.PlayerItemPickupListener_1_8_1_11;
 import com.stardevllc.starevents.v1_8_1_13_2.EntityCreatePortalListener_1_8_1_13_2;
@@ -33,10 +33,14 @@ import com.stardevllc.starevents.v1_8_8.EntityEvents_1_8_8;
 import com.stardevllc.starevents.v1_8_8.PlayerEvents_1_8_8;
 import com.stardevllc.starevents.v1_9_4.PlayerEvents_1_9_4;
 import com.stardevllc.starevents.v1_9_4.ServerEvents_1_9_4;
+import com.stardevllc.starlib.helper.Pair;
+import com.stardevllc.starlib.helper.ReflectionHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
+import org.bukkit.event.EventHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 public final class StarEvents {
@@ -48,6 +52,8 @@ public final class StarEvents {
     private static final List<EventListener> succesfulListeners = new ArrayList<>();
     private static final Map<EventListener, Throwable> failedListeners = new HashMap<>();
     private static final List<EventListener> outOfRangeListeners = new ArrayList<>();
+    
+    private static final Map<Class<? extends Event>, Pair<Object, Method>> eventsTracked = new HashMap<>();
     
     public static void registerListener(Object listener) {
         EventListener.EVENT_BUS.subscribe(listener);
@@ -121,13 +127,11 @@ public final class StarEvents {
                 new BlockEvents_1_18_1(),
                 new InventoryEvents_1_19_3(),
                 new EntityEvents_1_20_1(),
-                new BlockEvents_1_21_1(),
                 new EntityEvents_1_21_1(),
                 new PlayerEvents_1_21_1(),
                 new BlockEvents_1_21_4(),
                 new EntityEvents_1_21_4(),
-                new EntityEvents_1_21_7(),
-                new PlayerEvents_1_21_7()
+                new EntityEvents_1_21_7()
         );
         
         for (EventListener listener : listeners) {
@@ -156,6 +160,31 @@ public final class StarEvents {
         
         try {
             Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
+            
+            Set<Method> methods = ReflectionHelper.getClassMethods(listener.getClass());
+            for (Method method : methods) {
+                if (!method.isAnnotationPresent(EventHandler.class)) {
+                    continue;
+                }
+                
+                if (method.getParameterCount() != 1) {
+                    continue;
+                }
+                
+                Class<?> paramType = method.getParameterTypes()[0];
+                if (Event.class.isAssignableFrom(paramType)) {
+                    if (eventsTracked.containsKey(paramType)) {
+                        plugin.getLogger().warning("Event " + paramType.getName() + " has duplicate listeners");
+                        plugin.getLogger().warning("  - " + listener.getClass().getName());
+                        
+                        Pair<Object, Method> info = eventsTracked.get(paramType);
+                        plugin.getLogger().warning("  - " + info.first().getClass().getName());
+                    } else {
+                        eventsTracked.put((Class<? extends Event>) paramType, new Pair<>(listener.getClass(), method));
+                    }
+                }
+            }
+            
             succesfulListeners.add(listener);
             return Status.SUCCESS;
         } catch (Throwable t) {
@@ -178,5 +207,9 @@ public final class StarEvents {
     
     public static List<EventListener> getOutOfRangeListeners() {
         return new ArrayList<>(outOfRangeListeners);
+    }
+    
+    public static Map<Class<? extends Event>, Pair<Object, Method>> getEventsTracked() {
+        return new HashMap<>(eventsTracked);
     }
 }

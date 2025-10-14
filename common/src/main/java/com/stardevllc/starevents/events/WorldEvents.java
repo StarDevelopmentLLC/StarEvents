@@ -16,7 +16,7 @@ public class WorldEvents extends EventListener {
     }
     
     @EventHandler
-    public void onChunkUnload(ChunkLoadEvent e) {
+    public void onChunkUnload(ChunkUnloadEvent e) {
         EVENT_BUS.post(e);
     }
     
