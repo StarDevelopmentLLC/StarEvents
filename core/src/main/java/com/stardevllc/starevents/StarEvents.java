@@ -34,7 +34,7 @@ import com.stardevllc.starevents.v1_8_8.PlayerEvents_1_8_8;
 import com.stardevllc.starevents.v1_9_4.PlayerEvents_1_9_4;
 import com.stardevllc.starevents.v1_9_4.ServerEvents_1_9_4;
 import com.stardevllc.starlib.helper.Pair;
-import com.stardevllc.starlib.helper.ReflectionHelper;
+import com.stardevllc.starlib.reflection.ReflectionHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
